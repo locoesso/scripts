@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ "$1" != "" ]; then
+	FILE=$1
+	if [ -f $FILE ];
+	then
+		echo ""
+		sudo fdisk -l /dev/$2
+		echo -e "\n\033[1mWrite $FILE to /dev/$2\n\033[0m"
+		read -p "Do you want to continue? [y/N] " ans
+		if [ "$ans" == "y" ]
+		then
+			echo -e "\n\033[1mWriting $1 to /dev/$2...\033[0m\n"
+			sudo dd bs=4M if=$1 of=/dev/$2 status=progress && sync
+		else
+	     	echo -e "\n\033[1mOperation aborted.\n\033[0m"
+		fi
+	else
+		echo "File $FILE does not exists"
+	fi
+else
+echo -e "No file name!\nUsage: usb-boot-creator [iso to write] [device]"
+echo -e "Example: usb-boot-creator writeme.iso sde"
+fi

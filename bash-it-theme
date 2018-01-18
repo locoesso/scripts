@@ -1,0 +1,5 @@
+#!/bin/bash
+
+THEME=%1
+
+export BASH_IT_THEME='$THEME'

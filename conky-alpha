@@ -1,0 +1,5 @@
+#!/bin/bash
+
+killall conky
+conky-colors --theme=elementary --ubuntu --cpu=4 --cputemp --network --eth=0 --hd=default --nvidia --weather=FIXX0031 --updates --proc=5 --hdtemp2=sdb
+conky -c ~/.conkycolors/conkyrc

@@ -1,0 +1,2 @@
+#!/bin/bash
+mc cd ftp://xbox:xbox@192.168.11.104

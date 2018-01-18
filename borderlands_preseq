@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /home/esso/.games/Borderlands.The.Pre-Sequel/
+./BorderlandsPreSequel "$0"

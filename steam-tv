@@ -1,0 +1,4 @@
+#!/bin/bash
+disper -s
+steam -bigpicture
+disper -S

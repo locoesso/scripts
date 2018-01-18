@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "APT cache size on disk: "
+sudo du -sh /var/cache/apt/archives
+read -p "Do you want to clean cache? [y/N] " ans
+if [ "$ans" == "y" ]
+then
+	echo -e "Cleaning cache..."
+	sudo apt clean
+	sudo du -sh /var/cache/apt/archives
+else
+    echo -e "Cache not cleaned."
+fi

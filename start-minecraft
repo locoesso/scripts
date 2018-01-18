@@ -1,0 +1,11 @@
+#!/bin/bash
+MACHINE="$(uname -n)"
+if $MACHINE=beta; then
+	xfwm4 --replace --compositor=off &
+	java -jar ~/.minecraft/minecraft.jar
+	xfwm4 --replace --compositor=on &
+else
+	java -jar ~/.minecraft/minecraft.jar
+	exit 1
+fi
+exit

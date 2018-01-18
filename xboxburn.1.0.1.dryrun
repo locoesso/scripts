@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# xbox 360 burning script 1.0.1 by esso
+
+set -e
+
+# Set path to FILENAME and check the dvd-file
+FILENAME="$1"
+DVDFILE="${FILENAME%.iso}.dvd"
+
+if [ ! -r "$FILENAME" ]; then
+    echo "Error! Could not find the image-file. Please provide a valid path."
+    exit 1
+fi
+
+if [ ! -r "$DVDFILE" ]; then
+    echo "Error\! Could not find the corresponding dvd-file for the image ($DVDFILE). Please re-run abgx360."
+    exit 1
+fi
+
+FILESIZE=$(stat -c%s "$FILENAME")
+echo "Size of $FILENAME = $FILESIZE bytes."
+
+# If filesize checks out, start growisofs
+if [ $FILESIZE -ge 7572881408 ]; then
+    # If yes, then burn ISO
+    abgx360 --af3 --rgn 00FE0000 "$FILENAME"
+    LAYERBRAKE=$(grep -i LayerBreak "$DVDFILE" | tr -d '\r' | cut -d'=' -f2)
+    if [ $LAYERBRAKE -ge 0 ]; then
+		if [ $LAYERBRAKE -eq 2133520 ]; then
+			echo -e "\033[1m\n\nBurning \033[31m$FILENAME\033[0m\033[1m with layer brake \033[31m$LAYERBRAKE\033[1m ...\n\033[0m"
+			echo -e "growisofs -dry-run -use-the-force-luke=break:$LAYERBRAKE -speed=2 -Z /dev/sr0="$FILENAME""
+			read -p "Continue (y)es or (n)o ?" ans
+			if [ "$ans" == "y" ]; then
+        			growisofs -dry-run -use-the-force-luke=break:$LAYERBRAKE -speed=2 -Z /dev/sr0="$FILENAME"
+				echo -e "\n\033[1mBurning done!\n\033[0m"
+				exit 1
+			else
+				exit 1
+			fi
+		else
+				if [ $LAYERBRAKE -eq 1913760 ]; then
+					echo -e "\033[1m\n\nBurning \033[31m$FILENAME\033[0m\033[1m with layer brake \033[31m$LAYERBRAKE\033[1m ...\n\033[0m"
+					echo -e "growisofs -dry-run -use-the-force-luke=dao -use-the-force-luke=break:$LAYERBRAKE -dvd-compat -speed=2 -Z /dev/sr0="$FILENAME""
+					read -p "Continue (y)es or (n)o ?" ans
+					if [ "$ans" == "y" ]; then
+						growisofs -dry-run -use-the-force-luke=dao -use-the-force-luke=break:$LAYERBRAKE -dvd-compat -speed=2 -Z /dev/sr0="$FILENAME"
+						echo -e "\n\033[1mBurning done!\n\033[0m"
+						exit 1
+				else
+						exit 1
+				fi
+			else
+				exit 1
+			fi
+		fi
+    fi
+    	else
+        	# If filesize doesn't check out, display warning message
+        	echo "Error\! $FILENAME appears to be smaller than 7572881408 bytes and is most likely unpatched. Please re-run abgx360."
+        	exit 1
+    	fi
+    else
+    	# If filesize doesn't check out, display warning message
+    	echo "Error\! $FILENAME appears to be smaller than 7572881408 bytes and is most likely unpatched. Please re-run abgx360."
+    	exit 1
+   fi
+
+

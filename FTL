@@ -1,0 +1,6 @@
+#!/bin/bash
+NOW=$(date +"%d-%m-%Y_%H.%M.%S")
+cp $HOME/.local/share/FasterThanLight/continue.sav $HOME/.local/share/FasterThanLight/continue.sav.$NOW
+cd $HOME/.games/FTL/data
+./FTL "$0"
+tar -cvjf "/media/cirrus/backup/FTL/FTL-$NOW.tar.bz2" "$HOME/.local/share/FasterThanLight"

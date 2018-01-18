@@ -1,0 +1,4 @@
+#!/bin/bash
+xfwm4 --replace --compositor=on &
+xfconf-query --channel=xfwm4 --property=/general/use_compositing --set=true &
+exit
